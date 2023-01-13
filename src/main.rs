@@ -1,8 +1,8 @@
-#[macro_use] extern crate rocket;
+#[macro_use]
+extern crate rocket;
 
-use rocket::serde::{Deserialize, Serialize};
-use rocket::serde::json::{Json, Value};
-use rocket::serde::json::serde_json::json;
+use rocket::{Build, Rocket};
+use rocket::serde::{Deserialize, Serialize, json::{Json, Value, serde_json::json}};
 
 // The type to represent the ID of a message.
 type Id = usize;
@@ -31,10 +31,9 @@ fn not_found() -> Value {
     })
 }
 
-#[rocket::main]
-async fn main() {
-    let _ = rocket::build()
+#[launch]
+fn rocket() -> Rocket<Build> {
+    rocket::build()
         .mount("/", routes![get, post])
         .register("/", catchers![not_found])
-        .launch().await.expect("Panic");
 }
