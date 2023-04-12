@@ -12,6 +12,7 @@ use crate::routes::supply_routes;
 mod catchers;
 mod models;
 mod routes;
+mod utils;
 
 #[launch]
 fn rocket() -> Rocket<Build> {
