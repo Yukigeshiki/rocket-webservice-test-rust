@@ -3,7 +3,7 @@ use rocket::serde::json::Json;
 use rocket::serde::Serialize;
 use rocket::{response, Request, Response};
 
-/// The struct we return for success responses (200s)
+/// Return when request is successful.
 #[derive(Debug)]
 pub struct SuccessResponse<T>
 where
@@ -13,8 +13,6 @@ where
     pub status: Status,
 }
 
-/// Implements the `Responder` trait for Rocket, so we can simply return for
-/// endpoint functions, result and Rocket takes care of the rest.
 impl<'r, T: Serialize> response::Responder<'r, 'r> for SuccessResponse<T> {
     fn respond_to(self, req: &'r Request) -> response::Result<'r> {
         Response::build_from(self.payload.respond_to(req)?)
@@ -24,7 +22,7 @@ impl<'r, T: Serialize> response::Responder<'r, 'r> for SuccessResponse<T> {
     }
 }
 
-/// The struct we return for error responses (400s, 500s)
+/// Return when request has failed.
 #[derive(Debug)]
 pub struct FailResponse<T>
 where
@@ -34,7 +32,6 @@ where
     pub status: Status,
 }
 
-/// Implements the `Responder` trait, much like for `ApiResponse`, but for `ApiError`
 impl<'r, T: Serialize> response::Responder<'r, 'r> for FailResponse<T> {
     fn respond_to(self, req: &'r Request) -> response::Result<'r> {
         Response::build_from(self.error.respond_to(req)?)

@@ -23,9 +23,11 @@ RUN apk add --no-cache libgcc
 
 COPY --from=builder /app/target/release/rust-rocket-test /usr/local/bin/
 
+ENV ROCKET_LOG_LEVEL="off"
 ENV ROCKET_ADDRESS=0.0.0.0
+ENV ROCKET_PORT=8080
 
 WORKDIR /root
 
 # set the binary as entrypoint
-CMD ROCKET_PORT=$PORT /usr/local/bin/rust-rocket-test
+CMD /usr/local/bin/rust-rocket-test
