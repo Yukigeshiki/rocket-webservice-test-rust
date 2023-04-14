@@ -3,23 +3,22 @@ use rocket::serde::json::Json;
 use rocket::Catcher;
 use uuid::Uuid;
 
-use crate::models::Fail;
-use crate::response::FailResponse;
-use crate::utils::log;
+use crate::model::responses::{Fail, FailResponse};
+use crate::util::logger::Logger;
 
-pub fn supply_catchers() -> Vec<Catcher> {
+pub fn catchers() -> Vec<Catcher> {
     catchers![bad_request, not_found, server_error]
 }
 
-#[catch(400)]
-pub fn bad_request() -> FailResponse<Fail<'static>> {
+#[catch(500)]
+fn server_error() -> FailResponse<Fail> {
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
-        req_id,
-        error: "Client has issued a malformed or illegal request.",
+        req_id: req_id.clone(),
+        error: "Internal server error has occurred.",
     };
 
-    log::error(&res);
+    Logger(req_id).error(&res);
 
     FailResponse {
         error: Some(Json(res)),
@@ -28,14 +27,14 @@ pub fn bad_request() -> FailResponse<Fail<'static>> {
 }
 
 #[catch(404)]
-pub fn not_found() -> FailResponse<Fail<'static>> {
+fn not_found() -> FailResponse<Fail> {
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
-        req_id,
+        req_id: req_id.clone(),
         error: "Resource was not found.",
     };
 
-    log::error(&res);
+    Logger(req_id).error(&res);
 
     FailResponse {
         error: Some(Json(res)),
@@ -43,15 +42,15 @@ pub fn not_found() -> FailResponse<Fail<'static>> {
     }
 }
 
-#[catch(500)]
-pub fn server_error() -> FailResponse<Fail<'static>> {
+#[catch(400)]
+fn bad_request() -> FailResponse<Fail> {
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
-        req_id,
-        error: "Internal server error has occurred.",
+        req_id: req_id.clone(),
+        error: "Client has issued a malformed or illegal request.",
     };
 
-    log::error(&res);
+    Logger(req_id).error(&res);
 
     FailResponse {
         error: Some(Json(res)),

@@ -2,35 +2,21 @@
 extern crate rocket;
 
 use std::env;
-use std::str::FromStr;
 
 use rocket::{Build, Rocket};
-use rocket_cors::{AllowedOrigins, CorsOptions};
 
-use crate::catchers::supply_catchers;
-use crate::routes::supply_routes;
+use crate::fairing::fairings::cors;
+use crate::route::catchers::catchers;
+use crate::route::routes::routes;
 
-mod catchers;
-mod models;
-pub mod request;
-pub mod response;
-mod routes;
-mod utils;
+mod fairing;
+mod model;
+mod route;
+mod util;
 
 #[launch]
 fn rocket() -> Rocket<Build> {
-    // Setup cors
-    let cors = CorsOptions::default()
-        .allowed_origins(AllowedOrigins::all())
-        .allowed_methods(
-            ["Get", "Post"]
-                .iter()
-                .map(|s| FromStr::from_str(s).unwrap())
-                .collect(),
-        )
-        .allow_credentials(true)
-        .to_cors()
-        .expect("Failed to setup cors configuration.");
+    let cors = cors();
 
     println!(
         "🚀 Rocket is launching from http://{}:{}",
@@ -39,8 +25,8 @@ fn rocket() -> Rocket<Build> {
     );
 
     rocket::build()
-        .mount("/", supply_routes())
-        .register("/", supply_catchers())
+        .mount("/", routes())
+        .register("/", catchers())
         .attach(cors.clone())
         .manage(cors)
 }
