@@ -3,6 +3,7 @@ extern crate rocket;
 
 use std::env;
 
+use rocket::fairing::AdHoc;
 use rocket::{Build, Rocket};
 
 use crate::fairing::fairings::cors;
@@ -16,17 +17,17 @@ mod util;
 
 #[launch]
 fn rocket() -> Rocket<Build> {
-    let cors = cors();
-
-    println!(
-        "🚀 Rocket is launching from http://{}:{}",
-        env::var("ROCKET_ADDRESS").unwrap_or("0.0.0.0".to_string()),
-        env::var("ROCKET_PORT").unwrap_or(8080.to_string())
-    );
-
     rocket::build()
         .mount("/", routes())
         .register("/", catchers())
-        .attach(cors.clone())
-        .manage(cors)
+        .attach(cors())
+        .attach(AdHoc::on_liftoff("Liftoff Printer", |r| {
+            Box::pin(async move {
+                println!(
+                    "🚀 We have liftoff from http://{}:{}",
+                    env::var("ROCKET_ADDRESS").unwrap_or(r.config().address.to_string()),
+                    env::var("ROCKET_PORT").unwrap_or(r.config().port.to_string())
+                );
+            })
+        }))
 }

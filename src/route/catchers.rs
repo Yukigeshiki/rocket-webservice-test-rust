@@ -7,15 +7,20 @@ use crate::model::responses::{Fail, FailResponse};
 use crate::util::logger::Logger;
 
 pub fn catchers() -> Vec<Catcher> {
-    catchers![bad_request, not_found, server_error]
+    catchers![
+        internal_server_error,
+        unprocessable_entity,
+        not_found,
+        bad_request
+    ]
 }
 
 #[catch(500)]
-fn server_error() -> FailResponse<Fail> {
+fn internal_server_error() -> FailResponse<Fail> {
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
         req_id: req_id.clone(),
-        error: "Internal server error has occurred.",
+        error: "An internal server error has occurred.",
         code: 500,
     };
 
@@ -27,12 +32,29 @@ fn server_error() -> FailResponse<Fail> {
     }
 }
 
+#[catch(422)]
+fn unprocessable_entity() -> FailResponse<Fail> {
+    let req_id = Uuid::new_v4().to_string();
+    let res = Fail {
+        req_id: req_id.clone(),
+        error: "The request was well-formed but was unable to be followed due to semantic errors.",
+        code: 422,
+    };
+
+    Logger(req_id).error(&res);
+
+    FailResponse {
+        error: Some(Json(res)),
+        status: Status::UnprocessableEntity,
+    }
+}
+
 #[catch(404)]
 fn not_found() -> FailResponse<Fail> {
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
         req_id: req_id.clone(),
-        error: "Resource was not found.",
+        error: "The resource was not found.",
         code: 404,
     };
 
@@ -49,7 +71,7 @@ fn bad_request() -> FailResponse<Fail> {
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
         req_id: req_id.clone(),
-        error: "Client has issued a malformed or illegal request.",
+        error: "The client has issued a malformed or illegal request.",
         code: 400,
     };
 
@@ -57,6 +79,6 @@ fn bad_request() -> FailResponse<Fail> {
 
     FailResponse {
         error: Some(Json(res)),
-        status: Status::InternalServerError,
+        status: Status::BadRequest,
     }
 }
