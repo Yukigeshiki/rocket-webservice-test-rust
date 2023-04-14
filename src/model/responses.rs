@@ -76,14 +76,15 @@ pub struct Fail {
     #[serde(rename = "reqId")]
     pub req_id: String,
     pub error: &'static str,
+    pub code: u32,
 }
 
 impl Debug for Fail {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "{{ \"req_id\": \"{}\", \"error\": \"{}\" }}",
-            self.req_id, self.error
+            "{{ \"req_id\": \"{}\", \"error\": \"{}\", \"code\": \"{}\" }}",
+            self.req_id, self.error, self.code
         )
     }
 }

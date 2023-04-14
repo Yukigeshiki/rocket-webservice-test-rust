@@ -16,6 +16,7 @@ fn server_error() -> FailResponse<Fail> {
     let res = Fail {
         req_id: req_id.clone(),
         error: "Internal server error has occurred.",
+        code: 500,
     };
 
     Logger(req_id).error(&res);
@@ -32,6 +33,7 @@ fn not_found() -> FailResponse<Fail> {
     let res = Fail {
         req_id: req_id.clone(),
         error: "Resource was not found.",
+        code: 404,
     };
 
     Logger(req_id).error(&res);
@@ -48,6 +50,7 @@ fn bad_request() -> FailResponse<Fail> {
     let res = Fail {
         req_id: req_id.clone(),
         error: "Client has issued a malformed or illegal request.",
+        code: 400,
     };
 
     Logger(req_id).error(&res);
