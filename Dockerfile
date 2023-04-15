@@ -13,7 +13,7 @@ COPY ./ /app
 
 # do a release build
 RUN cargo build --release
-RUN strip target/release/rust-rocket-test
+RUN strip target/release/rocket-webservice-test
 
 # use a plain alpine image, the alpine version needs to match the builder
 FROM alpine:3.15
@@ -21,7 +21,7 @@ FROM alpine:3.15
 # if needed, install additional dependencies here
 RUN apk add --no-cache libgcc
 
-COPY --from=builder /app/target/release/rust-rocket-test /usr/local/bin/
+COPY --from=builder /app/target/release/rocket-webservice-test /usr/local/bin/
 
 ENV ROCKET_LOG_LEVEL="off"
 ENV ROCKET_ADDRESS=0.0.0.0
@@ -30,4 +30,4 @@ ENV ROCKET_PORT=8080
 WORKDIR /root
 
 # set the binary as entrypoint
-CMD /usr/local/bin/rust-rocket-test
+CMD /usr/local/bin/rocket-webservice-test

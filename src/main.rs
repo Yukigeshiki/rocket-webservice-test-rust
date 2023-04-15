@@ -10,10 +10,10 @@ use crate::fairing::fairings::cors;
 use crate::route::catchers::catchers;
 use crate::route::routes::routes;
 
+mod common;
 mod fairing;
 mod model;
 mod route;
-mod util;
 
 #[launch]
 fn rocket() -> Rocket<Build> {

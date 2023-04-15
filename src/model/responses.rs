@@ -25,25 +25,6 @@ impl<'r, T: Serialize> Responder<'r, 'r> for SuccessResponse<T> {
     }
 }
 
-/// Return when request has failed.
-#[derive(Debug)]
-pub struct FailResponse<T>
-where
-    T: Serialize,
-{
-    pub error: Option<Json<T>>,
-    pub status: Status,
-}
-
-impl<'r, T: Serialize> Responder<'r, 'r> for FailResponse<T> {
-    fn respond_to(self, req: &'r Request) -> Result<'r> {
-        Response::build_from(self.error.respond_to(req)?)
-            .status(self.status)
-            .header(ContentType::JSON)
-            .ok()
-    }
-}
-
 /// Contains a successful requests payload and request ID.
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
@@ -66,6 +47,25 @@ where
             "{{ \"req_id\": \"{}\", \"payload\": {:?} }}",
             self.req_id, self.payload
         )
+    }
+}
+
+/// Return when request has failed.
+#[derive(Debug)]
+pub struct FailResponse<T>
+where
+    T: Serialize,
+{
+    pub error: Option<Json<T>>,
+    pub status: Status,
+}
+
+impl<'r, T: Serialize> Responder<'r, 'r> for FailResponse<T> {
+    fn respond_to(self, req: &'r Request) -> Result<'r> {
+        Response::build_from(self.error.respond_to(req)?)
+            .status(self.status)
+            .header(ContentType::JSON)
+            .ok()
     }
 }
 

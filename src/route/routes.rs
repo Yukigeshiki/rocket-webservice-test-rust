@@ -2,9 +2,9 @@ use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::Route;
 
+use crate::common::utils::Logger;
 use crate::model::models::{Id, IdPayload, Message};
 use crate::model::responses::{Fail, FailResponse, Success, SuccessResponse};
-use crate::util::logger::Logger;
 
 type F = FailResponse<Fail>;
 type S<T> = SuccessResponse<Success<T>>;

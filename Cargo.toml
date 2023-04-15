@@ -1,5 +1,5 @@
 [package]
-name = "rust-rocket-test"
+name = "rocket-webservice-test"
 version = "0.1.0"
 edition = "2021"
 

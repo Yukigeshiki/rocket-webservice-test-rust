@@ -1,4 +1,4 @@
-# rust-rocket-test
+# rocket-webservice-test-rust
 A basic web service template for Rust using the Rocket framework and tested with GCP Cloud Run.
 
 To deploy to Cloud Run:

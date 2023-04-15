@@ -3,8 +3,8 @@ use rocket::serde::json::Json;
 use rocket::Catcher;
 use uuid::Uuid;
 
+use crate::common::utils::Logger;
 use crate::model::responses::{Fail, FailResponse};
-use crate::util::logger::Logger;
 
 pub fn catchers() -> Vec<Catcher> {
     catchers![

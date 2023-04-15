@@ -864,6 +864,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "rocket-webservice-test"
+version = "0.1.0"
+dependencies = [
+ "rocket",
+ "rocket_cors",
+ "uuid",
+]
+
+[[package]]
 name = "rocket_codegen"
 version = "0.5.0-rc.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -921,15 +930,6 @@ dependencies = [
  "time",
  "tokio",
  "uncased",
-]
-
-[[package]]
-name = "rust-rocket-test"
-version = "0.1.0"
-dependencies = [
- "rocket",
- "rocket_cors",
- "uuid",
 ]
 
 [[package]]
