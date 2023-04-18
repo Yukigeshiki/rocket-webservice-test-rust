@@ -19,68 +19,72 @@ pub fn catchers() -> Vec<Catcher> {
 
 #[catch(500)]
 fn internal_server_error() -> FailResponse<Fail> {
+    let status = Status::InternalServerError;
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
         req_id: req_id.clone(),
         error: "An internal server error has occurred.",
-        code: 500,
+        code: status.code,
     };
 
     Logger(req_id).error(&res);
 
     FailResponse {
         error: Some(Json(res)),
-        status: Status::InternalServerError,
+        status,
     }
 }
 
 #[catch(422)]
 fn unprocessable_entity() -> FailResponse<Fail> {
+    let status = Status::UnprocessableEntity;
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
         req_id: req_id.clone(),
         error: "The request was well-formed but was unable to be followed due to semantic errors.",
-        code: 422,
+        code: status.code,
     };
 
     Logger(req_id).error(&res);
 
     FailResponse {
         error: Some(Json(res)),
-        status: Status::UnprocessableEntity,
+        status,
     }
 }
 
 #[catch(404)]
 fn not_found() -> FailResponse<Fail> {
+    let status = Status::NotFound;
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
         req_id: req_id.clone(),
         error: "The resource was not found.",
-        code: 404,
+        code: status.code,
     };
 
     Logger(req_id).error(&res);
 
     FailResponse {
         error: Some(Json(res)),
-        status: Status::NotFound,
+        status,
     }
 }
 
 #[catch(400)]
 fn bad_request() -> FailResponse<Fail> {
+    let status = Status::BadRequest;
     let req_id = Uuid::new_v4().to_string();
     let res = Fail {
         req_id: req_id.clone(),
         error: "The client has issued a malformed or illegal request.",
-        code: 400,
+        code: status.code,
     };
 
     Logger(req_id).error(&res);
 
     FailResponse {
         error: Some(Json(res)),
-        status: Status::BadRequest,
+        status,
     }
 }

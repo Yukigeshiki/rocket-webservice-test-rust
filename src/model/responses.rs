@@ -78,7 +78,7 @@ pub struct Fail {
     #[serde(rename = "reqId")]
     pub req_id: String,
     pub error: &'static str,
-    pub code: u32,
+    pub code: u16,
 }
 
 impl Debug for Fail {
