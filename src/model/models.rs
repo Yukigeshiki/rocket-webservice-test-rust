@@ -1,3 +1,6 @@
+//! Add your models here, along with a Debug implementation for clean and easy to analyse logging.
+//! JSON structuring has been used in the example models.
+
 use rocket::serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Formatter};
 

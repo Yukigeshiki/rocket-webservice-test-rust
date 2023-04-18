@@ -1,3 +1,5 @@
+//! Add your utilities here, e.g. logger, helper functions, etc.
+
 use std::fmt::{Debug, Formatter};
 
 use rocket::request::{FromRequest, Outcome};

@@ -1,3 +1,5 @@
+//! These are the default response models. Leave them as is, or update them to fit your needs.
+
 use std::fmt::{Debug, Formatter};
 
 use rocket::http::{ContentType, Status};

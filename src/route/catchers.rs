@@ -1,3 +1,5 @@
+//! Add your error catchers here - as many as your project might need.
+
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::Catcher;

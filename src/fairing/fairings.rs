@@ -1,3 +1,5 @@
+//! Add your fairings here.
+
 use rocket_cors::{AllowedOrigins, Cors, CorsOptions};
 use std::str::FromStr;
 
