@@ -1,0 +1,31 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Build'
+    entrypoint: 'gcloud'
+    args:
+      - 'builds'
+      - 'submit'
+      - '--tag'
+      - '${_IMAGE_NAME}'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Deploy'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE_NAME}'
+      - '--image'
+      - '${_IMAGE_NAME}'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+substitutions:
+  _SERVICE_NAME: '<service-name>'
+  _IMAGE_NAME: 'gcr.io/<project-id>/${_SERVICE_NAME}'
+  _REGION: '<region>'
+options:
+  dynamic_substitutions: true
+# https://cloud.google.com/build/docs/build-config-file-schema#timeout_2
+timeout: 1800s
