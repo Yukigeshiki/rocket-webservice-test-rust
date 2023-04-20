@@ -20,11 +20,26 @@ steps:
       - '${_REGION}'
       - '--platform'
       - 'managed'
+      - '--max-instances'
+      - '${_MAX_INSTANCES}'
       - '--allow-unauthenticated'
+      # add mongo_uri to GCP Secret Manager
+      - '--update-secrets=MONGO_URI=mongo_uri:latest'
+      - '--set-env-vars'
+      - 'ENV=${_ENV}'
+      - '--set-env-vars'
+      - 'LOG_LEVEL=${_LOG_LEVEL}'
+      - '--service-account'
+      - '${_SERVICE_ACCOUNT}'
 substitutions:
   _SERVICE_NAME: '<service-name>'
-  _IMAGE_NAME: 'gcr.io/<project-id>/${_SERVICE_NAME}'
+  _PROJECT_ID: '<project-id>'
+  _IMAGE_NAME: 'gcr.io/${_PROJECT_ID}/${_SERVICE_NAME}'
   _REGION: '<region>'
+  _SERVICE_ACCOUNT: '<service-acc>'
+  _MAX_INSTANCES: '3'
+  _ENV: 'dev'
+  _LOG_LEVEL: 'debug'
 options:
   dynamic_substitutions: true
 # https://cloud.google.com/build/docs/build-config-file-schema#timeout_2
