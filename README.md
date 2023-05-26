@@ -8,6 +8,7 @@ Export variables
 ```bash
 export PROJECT_ID=<project-id>
 export SERVICE_NAME=<service-name>
+export SERVICE_ACC=<service-acc>
 export REGION=<region>
 ```
 
@@ -17,7 +18,11 @@ Substitute values and run Cloud Build file
  cp ./cloudbuild.yaml ./cloudbuild_copy.yaml && \
  sed -i '' -e "s/<project-id>/${PROJECT_ID}/" \
            -e "s/<service-name>/${SERVICE_NAME}/" \
+           -e "s/<service-acc>/${SERVICE_ACC}/" \
            -e "s/<region>/${REGION}/" ./cloudbuild_copy.yaml && \
 gcloud builds submit --config ./cloudbuild_copy.yaml && \
 rm ./cloudbuild_copy.yaml
 ```
+
+The permissions needed for the Cloud Build and Cloud Run service accounts can be found in the README of [this](https://github.com/Yukigeshiki/gcp-cloud-run-deploy-rust)
+repo.
